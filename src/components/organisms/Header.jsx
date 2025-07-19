@@ -63,7 +63,7 @@ const Header = ({ onMenuToggle, showSearch = true }) => {
         )}
 
         {/* Right side items */}
-        <div className="flex items-center space-x-4">
+<div className="flex items-center space-x-4">
           {/* Quick actions */}
           <div className="hidden md:flex items-center space-x-2">
             <Button variant="secondary" icon="Plus" size="sm">
@@ -72,8 +72,10 @@ const Header = ({ onMenuToggle, showSearch = true }) => {
             <Button variant="accent" icon="FileText" size="sm">
               New Application
             </Button>
+            <Button variant="primary" icon="Play" size="sm" onClick={() => window.location.href = '/demo'}>
+              Demo
+            </Button>
           </div>
-
           {/* Notifications */}
           <div className="relative">
             <button

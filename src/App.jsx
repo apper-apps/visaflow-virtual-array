@@ -11,7 +11,7 @@ import Settings from "@/components/pages/Settings";
 function App() {
   return (
     <>
-      <Routes>
+<Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="clients" element={<Clients />} />
@@ -19,6 +19,7 @@ function App() {
           <Route path="documents" element={<Documents />} />
           <Route path="compliance" element={<Compliance />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="demo" element={<Applications />} />
         </Route>
       </Routes>
       
