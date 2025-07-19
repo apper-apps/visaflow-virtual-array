@@ -16,6 +16,8 @@ const ApplicationWizard = ({ onComplete, onCancel, clientId }) => {
     documents: [],
     declaration: false
   });
+  const [errors, setErrors] = useState({});
+  const [validationTouched, setValidationTouched] = useState({});
 
   const steps = [
     {
@@ -87,9 +89,43 @@ const ApplicationWizard = ({ onComplete, onCancel, clientId }) => {
     }
   ];
 
+const validateCurrentStep = () => {
+    const newErrors = {};
+    
+    if (currentStep === 1 && formData.visaSubclass === "482") {
+      const required482Fields = [
+        'givenNames', 'familyName', 'dateOfBirth', 'passportNumber',
+        'countryOfBirth', 'nationality', 'email', 'phone',
+        'jobTitle', 'employerName', 'employerABN', 'workLocation',
+        'skillsAssessmentBody', 'englishTestType', 'englishTestScore'
+      ];
+      
+      required482Fields.forEach(field => {
+        if (!formData.applicantDetails[field] || formData.applicantDetails[field].trim() === '') {
+          newErrors[field] = 'This field is required for subclass 482';
+        }
+      });
+      
+      // Email validation
+      if (formData.applicantDetails.email && !/\S+@\S+\.\S+/.test(formData.applicantDetails.email)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+      
+      // ABN validation
+      if (formData.applicantDetails.employerABN && !/^\d{11}$/.test(formData.applicantDetails.employerABN.replace(/\s/g, ''))) {
+        newErrors.employerABN = 'ABN must be 11 digits';
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+      if (validateCurrentStep()) {
+        setCurrentStep(currentStep + 1);
+      }
     }
   };
 
@@ -103,8 +139,34 @@ const ApplicationWizard = ({ onComplete, onCancel, clientId }) => {
     setFormData({
       ...formData,
       visaType: visa.name,
-      visaSubclass: visa.code
+      visaSubclass: visa.code,
+      applicantDetails: {} // Reset form when visa type changes
     });
+    setErrors({});
+    setValidationTouched({});
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      applicantDetails: {
+        ...prev.applicantDetails,
+        [field]: value
+      }
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
+    
+    setValidationTouched(prev => ({
+      ...prev,
+      [field]: true
+    }));
   };
 
   const StepIndicator = () => (
@@ -196,59 +258,191 @@ const ApplicationWizard = ({ onComplete, onCancel, clientId }) => {
     </div>
   );
 
-  const ApplicantDetailsStep = () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Applicant Information</h3>
-        <p className="text-gray-600">Provide personal details for the primary applicant.</p>
+const ApplicantDetailsStep = () => {
+    const is482Visa = formData.visaSubclass === "482";
+    
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Applicant Information
+            {is482Visa && <span className="text-primary-600"> - Skills in Demand visa</span>}
+          </h3>
+          <p className="text-gray-600">
+            {is482Visa 
+              ? "Provide comprehensive details required for the Temporary Skill Shortage visa application."
+              : "Provide personal details for the primary applicant."
+            }
+          </p>
+        </div>
+        
+        {/* Personal Details Section */}
+        <div>
+          <h4 className="font-medium text-gray-900 mb-4">Personal Details</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Input
+              label="Given Names"
+              placeholder="Enter given names"
+              value={formData.applicantDetails.givenNames || ''}
+              onChange={(e) => handleInputChange('givenNames', e.target.value)}
+              error={errors.givenNames}
+              required
+            />
+            <Input
+              label="Family Name"
+              placeholder="Enter family name"
+              value={formData.applicantDetails.familyName || ''}
+              onChange={(e) => handleInputChange('familyName', e.target.value)}
+              error={errors.familyName}
+              required
+            />
+            <Input
+              label="Date of Birth"
+              type="date"
+              value={formData.applicantDetails.dateOfBirth || ''}
+              onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+              error={errors.dateOfBirth}
+              required
+            />
+            <Input
+              label="Passport Number"
+              placeholder="Enter passport number"
+              value={formData.applicantDetails.passportNumber || ''}
+              onChange={(e) => handleInputChange('passportNumber', e.target.value)}
+              error={errors.passportNumber}
+              required
+            />
+            <Input
+              label="Country of Birth"
+              placeholder="Enter country of birth"
+              value={formData.applicantDetails.countryOfBirth || ''}
+              onChange={(e) => handleInputChange('countryOfBirth', e.target.value)}
+              error={errors.countryOfBirth}
+              required
+            />
+            <Input
+              label="Current Nationality"
+              placeholder="Enter nationality"
+              value={formData.applicantDetails.nationality || ''}
+              onChange={(e) => handleInputChange('nationality', e.target.value)}
+              error={errors.nationality}
+              required
+            />
+            <Input
+              label="Email Address"
+              type="email"
+              placeholder="Enter email address"
+              value={formData.applicantDetails.email || ''}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              error={errors.email}
+              required
+            />
+            <Input
+              label="Phone Number"
+              type="tel"
+              placeholder="Enter phone number"
+              value={formData.applicantDetails.phone || ''}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
+              error={errors.phone}
+              required
+            />
+          </div>
+        </div>
+
+        {/* 482-Specific Fields */}
+        {is482Visa && (
+          <>
+            <div className="border-t pt-6">
+              <h4 className="font-medium text-gray-900 mb-4">Employment Details</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input
+                  label="Job Title"
+                  placeholder="Enter nominated occupation"
+                  value={formData.applicantDetails.jobTitle || ''}
+                  onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                  error={errors.jobTitle}
+                  required
+                />
+                <Input
+                  label="Sponsoring Employer Name"
+                  placeholder="Enter employer name"
+                  value={formData.applicantDetails.employerName || ''}
+                  onChange={(e) => handleInputChange('employerName', e.target.value)}
+                  error={errors.employerName}
+                  required
+                />
+                <Input
+                  label="Employer ABN"
+                  placeholder="12 345 678 901"
+                  value={formData.applicantDetails.employerABN || ''}
+                  onChange={(e) => handleInputChange('employerABN', e.target.value)}
+                  error={errors.employerABN}
+                  required
+                />
+                <Input
+                  label="Work Location"
+                  placeholder="City, State"
+                  value={formData.applicantDetails.workLocation || ''}
+                  onChange={(e) => handleInputChange('workLocation', e.target.value)}
+                  error={errors.workLocation}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="border-t pt-6">
+              <h4 className="font-medium text-gray-900 mb-4">Skills Assessment & English Requirements</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input
+                  label="Skills Assessment Body"
+                  placeholder="e.g., Engineers Australia, VETASSESS"
+                  value={formData.applicantDetails.skillsAssessmentBody || ''}
+                  onChange={(e) => handleInputChange('skillsAssessmentBody', e.target.value)}
+                  error={errors.skillsAssessmentBody}
+                  required
+                />
+                <Input
+                  label="English Test Type"
+                  placeholder="IELTS, PTE, TOEFL iBT, etc."
+                  value={formData.applicantDetails.englishTestType || ''}
+                  onChange={(e) => handleInputChange('englishTestType', e.target.value)}
+                  error={errors.englishTestType}
+                  required
+                />
+                <Input
+                  label="English Test Overall Score"
+                  placeholder="Enter overall score"
+                  value={formData.applicantDetails.englishTestScore || ''}
+                  onChange={(e) => handleInputChange('englishTestScore', e.target.value)}
+                  error={errors.englishTestScore}
+                  required
+                />
+                <Input
+                  label="Test Date"
+                  type="date"
+                  value={formData.applicantDetails.englishTestDate || ''}
+                  onChange={(e) => handleInputChange('englishTestDate', e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="bg-info-50 border border-info-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <ApperIcon name="Info" className="w-5 h-5 text-info-600 mt-0.5" />
+                <div>
+                  <h4 className="font-medium text-info-800">Subclass 482 Requirements</h4>
+                  <p className="text-sm text-info-700 mt-1">
+                    This visa requires a valid job offer from an approved sponsor, positive skills assessment, 
+                    and competent English (minimum IELTS 5.0 or equivalent in each component).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Given Names"
-          placeholder="Enter given names"
-          required
-        />
-        <Input
-          label="Family Name"
-          placeholder="Enter family name"
-          required
-        />
-        <Input
-          label="Date of Birth"
-          type="date"
-          required
-        />
-        <Input
-          label="Passport Number"
-          placeholder="Enter passport number"
-          required
-        />
-        <Input
-          label="Country of Birth"
-          placeholder="Enter country of birth"
-          required
-        />
-        <Input
-          label="Current Nationality"
-          placeholder="Enter nationality"
-          required
-        />
-        <Input
-          label="Email Address"
-          type="email"
-          placeholder="Enter email address"
-          required
-        />
-        <Input
-          label="Phone Number"
-          type="tel"
-          placeholder="Enter phone number"
-          required
-        />
-      </div>
-    </div>
-  );
+    );
+  };
 
   const DocumentsStep = () => {
     const requiredDocs = [
@@ -384,13 +578,16 @@ const ApplicationWizard = ({ onComplete, onCancel, clientId }) => {
             <Button variant="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            {currentStep < steps.length - 1 ? (
+{currentStep < steps.length - 1 ? (
               <Button 
                 variant="primary" 
                 onClick={handleNext} 
                 iconPosition="right" 
                 icon="ChevronRight"
-                disabled={currentStep === 0 && !formData.visaSubclass}
+                disabled={
+                  (currentStep === 0 && !formData.visaSubclass) ||
+                  (currentStep === 1 && formData.visaSubclass === "482" && Object.keys(errors).length > 0)
+                }
               >
                 Next
               </Button>
