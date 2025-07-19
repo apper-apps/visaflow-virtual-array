@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import 'react-toastify/dist/ReactToastify.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: theme('colors.gray.900');
+    background-color: theme('colors.gray.50');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl shadow-card border border-gray-100;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:from-primary-600 hover:to-primary-700 hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-700 font-medium px-4 py-2 rounded-lg border border-gray-300 transition-all duration-200 hover:bg-gray-50 hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+  
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:from-accent-600 hover:to-accent-700 hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+  }
+  
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-primary-50 text-primary-700 border-r-2 border-primary-500;
+  }
+  
+  .sidebar-link:not(.active) {
+    @apply text-gray-600 hover:bg-gray-50 hover:text-gray-900;
+  }
+}
+
+/* Toast Customization */
+.Toastify__toast-container {
+  @apply top-4 right-4;
+}
+
+.Toastify__toast {
+  @apply rounded-lg shadow-elevated;
+  min-height: auto;
+  padding: 12px 16px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.Toastify__toast--success {
+  @apply bg-success-500 text-white;
+}
+
+.Toastify__toast--error {
+  @apply bg-error-500 text-white;
+}
+
+.Toastify__toast--info {
+  @apply bg-info-500 text-white;
+}
+
+.Toastify__toast--warning {
+  @apply bg-warning-500 text-white;
+}
+
+.Toastify__progress-bar {
+  @apply bg-white bg-opacity-30;
+}
+
+.Toastify__close-button {
+  @apply text-white opacity-80 hover:opacity-100;
+}

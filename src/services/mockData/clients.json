@@ -1,0 +1,140 @@
+[
+  {
+    "Id": 1,
+    "firstName": "Emily",
+    "lastName": "Chen",
+    "email": "emily.chen@email.com",
+    "phone": "+61 412 345 678",
+    "address": {
+      "street": "123 Collins Street",
+      "city": "Melbourne",
+      "state": "VIC",
+      "postcode": "3000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1985-03-15",
+    "passportNumber": "N1234567",
+    "nationality": "Chinese",
+    "abn": "12 345 678 901",
+    "medicareNumber": "2234567890",
+    "status": "Active",
+    "applications": 2,
+    "lastContact": "2024-01-28",
+    "createdAt": "2023-08-15T09:30:00Z"
+  },
+  {
+    "Id": 2,
+    "firstName": "James",
+    "lastName": "Rodriguez",
+    "email": "james.rodriguez@email.com",
+    "phone": "+61 423 456 789",
+    "address": {
+      "street": "456 George Street",
+      "city": "Sydney",
+      "state": "NSW",
+      "postcode": "2000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1990-07-22",
+    "passportNumber": "P7654321",
+    "nationality": "Spanish",
+    "abn": "23 456 789 012",
+    "medicareNumber": "3345678901",
+    "status": "Pending",
+    "applications": 1,
+    "lastContact": "2024-01-25",
+    "createdAt": "2023-09-22T14:15:00Z"
+  },
+  {
+    "Id": 3,
+    "firstName": "Sarah",
+    "lastName": "Thompson",
+    "email": "sarah.thompson@email.com",
+    "phone": "+61 434 567 890",
+    "address": {
+      "street": "789 Queen Street",
+      "city": "Brisbane",
+      "state": "QLD",
+      "postcode": "4000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1988-11-08",
+    "passportNumber": "B9876543",
+    "nationality": "British",
+    "abn": "34 567 890 123",
+    "medicareNumber": "4456789012",
+    "status": "Completed",
+    "applications": 3,
+    "lastContact": "2024-01-20",
+    "createdAt": "2023-06-10T11:45:00Z"
+  },
+  {
+    "Id": 4,
+    "firstName": "Ravi",
+    "lastName": "Patel",
+    "email": "ravi.patel@email.com",
+    "phone": "+61 445 678 901",
+    "address": {
+      "street": "321 King Street",
+      "city": "Perth",
+      "state": "WA",
+      "postcode": "6000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1982-05-30",
+    "passportNumber": "H5432109",
+    "nationality": "Indian",
+    "abn": "45 678 901 234",
+    "medicareNumber": "5567890123",
+    "status": "Active",
+    "applications": 1,
+    "lastContact": "2024-01-30",
+    "createdAt": "2023-10-05T16:20:00Z"
+  },
+  {
+    "Id": 5,
+    "firstName": "Maria",
+    "lastName": "Silva",
+    "email": "maria.silva@email.com",
+    "phone": "+61 456 789 012",
+    "address": {
+      "street": "654 Flinders Street",
+      "city": "Adelaide",
+      "state": "SA",
+      "postcode": "5000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1993-12-12",
+    "passportNumber": "B1357924",
+    "nationality": "Brazilian",
+    "abn": "56 789 012 345",
+    "medicareNumber": "6678901234",
+    "status": "On Hold",
+    "applications": 2,
+    "lastContact": "2024-01-18",
+    "createdAt": "2023-11-18T08:30:00Z"
+  },
+  {
+    "Id": 6,
+    "firstName": "David",
+    "lastName": "Kim",
+    "email": "david.kim@email.com",
+    "phone": "+61 467 890 123",
+    "address": {
+      "street": "987 Elizabeth Street",
+      "city": "Melbourne",
+      "state": "VIC",
+      "postcode": "3000",
+      "country": "Australia"
+    },
+    "dateOfBirth": "1986-09-03",
+    "passportNumber": "K2468135",
+    "nationality": "South Korean",
+    "abn": "67 890 123 456",
+    "medicareNumber": "7789012345",
+    "status": "Active",
+    "applications": 1,
+    "lastContact": "2024-01-27",
+    "createdAt": "2023-07-25T13:45:00Z"
+  }
+]
